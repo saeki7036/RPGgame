@@ -1577,6 +1577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Deta: {fileID: 1513460513}
+  Player: {fileID: 1471831075}
   endWall: {fileID: 2591640816904635383, guid: 742f61072c3a46b47824ec7d1c180e39, type: 3}
   wall: {fileID: 595602511139732777, guid: b13b77a9dfdba9f4f8350ca959955490, type: 3}
   water: {fileID: 8751724791198600014, guid: ea5179079c9114b46a9447f4f08fb974, type: 3}
