@@ -2,8 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapScript : MonoBehaviour
+public class MapMakeManager : MonoBehaviour
 {
+    const int BOARD_WIDTH = 30;
+    const int BOARD_HEIGHT = 20;
+
+    [Space]
+    [Header("")]
+    [SerializeField] GameObject Deta;
+
+    private MapDeta D_Map;
+
+
+
+
+
+
+
     public enum MapObject
     {
         EndWall = 0,
@@ -13,12 +28,10 @@ public class MapScript : MonoBehaviour
         Floor = 4,
         Road = 5,
     }
+    MapObject[,] _board = new MapObject[BOARD_HEIGHT, BOARD_WIDTH];
 
-    public const int BOARD_WIDTH = 30;
-    public const int BOARD_HEIGHT = 20;
-
-    MapObject[,] _board = new MapObject[BOARD_HEIGHT,BOARD_WIDTH];
-
+    [Header("Map_Object")]
+    [Space]
     [SerializeField] GameObject endWall;
     [SerializeField] GameObject wall;
     [SerializeField] GameObject water;
@@ -26,7 +39,7 @@ public class MapScript : MonoBehaviour
     [SerializeField] GameObject floor;
     [SerializeField] GameObject road;
 
-    private Mappreset Mp;
+    
     private void MapMake()
     {
         int randam = Random.Range(0, 10);
@@ -35,7 +48,7 @@ public class MapScript : MonoBehaviour
         {
             for (int x = 0; x < BOARD_WIDTH; x++)
             {
-                switch(Mp.Makepreset(randam, y, x))
+                switch(D_Map.MakeMapDeta(randam, y, x))
                 {
                     case 0:
                         _board[y, x] = MapObject.EndWall;
@@ -71,43 +84,43 @@ public class MapScript : MonoBehaviour
 
     public void SetObject(Vector2Int pos)
     {
-        Vector3 world_position = transform.position + new Vector3(pos.x * 2.0f + 1.0f, 0.0f, pos.y * 2.0f + 1.0f);
+        Vector3 Map_Object_position = transform.position + new Vector3(pos.x * 2.0f + 1.0f, 0.0f, pos.y * 2.0f + 1.0f);
 
         if(_board[pos.y, pos.x] == MapObject.Wall)
-                 Instantiate(wall, world_position, Quaternion.identity, transform);
+                 Instantiate(wall, Map_Object_position, Quaternion.identity, transform);
 
         else if(_board[pos.y, pos.x] == MapObject.EndWall)
-                 Instantiate(endWall, world_position, Quaternion.identity, transform);
+                 Instantiate(endWall, Map_Object_position, Quaternion.identity, transform);
 
         else if (_board[pos.y, pos.x] == MapObject.Water)
         {
             //world_position.y -= 0.5f;
-            Instantiate(water, world_position, Quaternion.identity, transform);
+            Instantiate(water, Map_Object_position, Quaternion.identity, transform);
         }
 
         else if (_board[pos.y, pos.x] == MapObject.Spase)
         {
             //world_position.y -= 0.5f;
-            Instantiate(spase, world_position, Quaternion.identity, transform);
+            Instantiate(spase, Map_Object_position, Quaternion.identity, transform);
         }
 
         else if (_board[pos.y, pos.x] == MapObject.Floor)
         {
             //world_position.y -= 0.5f;
-            Instantiate(floor, world_position, Quaternion.identity, transform);
+            Instantiate(floor, Map_Object_position, Quaternion.identity, transform);
         }
 
         else if (_board[pos.y, pos.x] == MapObject.Road)
         {
             //world_position.y -= 0.5f;
-            Instantiate(road, world_position, Quaternion.identity, transform);
+            Instantiate(road, Map_Object_position, Quaternion.identity, transform);
         }
     }
 
     void Start()
     {
         //Random.InitState(58);
-        Mp = GameObject.Find("Preset").GetComponent<Mappreset>();
+        D_Map = Deta.GetComponent<MapDeta>();
         MapMake();
 
 

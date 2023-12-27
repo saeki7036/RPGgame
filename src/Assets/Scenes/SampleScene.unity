@@ -1221,7 +1221,7 @@ GameObject:
   - component: {fileID: 1513460515}
   - component: {fileID: 1513460514}
   m_Layer: 0
-  m_Name: Preset
+  m_Name: Deta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1369,7 +1369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1795796740
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1442,7 +1442,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1795796739}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 30, y: 0, z: 20}
+  m_LocalPosition: {x: 30, y: -0.001, z: 20}
   m_LocalScale: {x: 6, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1576,6 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f0519a71fb82449869d0fcb8d64bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Deta: {fileID: 1513460513}
   endWall: {fileID: 2591640816904635383, guid: 742f61072c3a46b47824ec7d1c180e39, type: 3}
   wall: {fileID: 595602511139732777, guid: b13b77a9dfdba9f4f8350ca959955490, type: 3}
   water: {fileID: 8751724791198600014, guid: ea5179079c9114b46a9447f4f08fb974, type: 3}
