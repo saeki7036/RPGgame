@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MapObject : MonoBehaviour
 {
-    public int map_ob_x, map_ob_y;
+    public Vector2Int Enemy_pos;
     // Start is called before the first frame update
     void Start()
     {
-        map_ob_x = (int)transform.position.x / 2;
-        map_ob_y = (int)transform.position.y / 2;
+        Enemy_pos.x = (int)transform.position.x / 2;
+        Enemy_pos.y = (int)transform.position.z / 2;
     }
 
     // Update is called once per frame

@@ -11,6 +11,7 @@ public class MapMakeManager : MonoBehaviour
     [Header("Important_Object")]
     [SerializeField] GameObject Deta;
     [SerializeField] GameObject Player;
+    private PlayerScript P_Scr;
     private MapDeta D_Map;
 
     private class Floor_Deta
@@ -241,6 +242,43 @@ public class MapMakeManager : MonoBehaviour
         return Number;
     }
 
+    public bool NextCheck_P(Vector2Int pos,Vector2 Dier)
+    {
+        if(Dier == Vector2.zero)
+                return false;
+
+        int dier_x = 0,dier_y = 0;
+
+        if (Dier.x < 0)
+            dier_x--;
+        else if(Dier.x > 0)
+            dier_x++;
+
+        if (Dier.y < 0)
+            dier_y--;
+        else if (Dier.y > 0)
+            dier_y++;
+
+        dier_x += pos.x;
+        dier_y += pos.y;
+
+        if (dier_x != pos.x && dier_y != pos.y)
+        {
+            if ((int)_board_Map[dier_y, pos.x] < 4 || (int)_board_Map[pos.y, dier_x] < 4)
+                return false;
+        }
+
+        if ((int)_board_Map[dier_y, dier_x] >= 4)
+        {
+            _board_Chara[pos.y, pos.x] = CharaObject.None;
+            _board_Chara[dier_y, dier_x] = CharaObject.Player;
+            P_Scr.SetPos_P(new Vector2Int(dier_x, dier_y));
+            Debug.Log(new Vector2Int(dier_x, dier_y));
+        }
+
+        return true;
+    }
+
     void FloorSize(int num,int S_y, int S_x)
     {
         for (int Y = S_y, X = S_x;  Y < BOARD_HEIGHT - 1 && X < BOARD_WIDTH - 1; Y++, X++)
@@ -283,17 +321,17 @@ public class MapMakeManager : MonoBehaviour
     }
     void Start()
     {
+        P_Scr = Player.GetComponent<PlayerScript>();    
         //Random.InitState(58);
-       
+
         D_Map = Deta.GetComponent<MapDeta>();
         MapMake();
         Floor_Menber = SearchFloor();
 
         //Debug.Log(floor_Deta.Length);
-
-        SetObject_Chara(Player, RandamFloorSetting());
-        Vector2Int point = RandamFloorSetting();
-
+        Vector2Int PlayerPoint = RandamFloorSetting();
+        SetObject_Chara(Player, PlayerPoint);
+        P_Scr.SetPos_P(PlayerPoint);
 
     }
 
