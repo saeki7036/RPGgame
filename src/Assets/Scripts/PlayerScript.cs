@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerScript : MonoBehaviour
 {
-    [SerializeField] float Speed = 0.1f;
+    [SerializeField] float Speed = 0.04f;
 
     public Vector2Int Player_pos;
     private Vector2 _Direction;
