@@ -16,6 +16,9 @@ public enum ItemType
 [System.Serializable]
 public class ItemData : ScriptableObject
 {
+
+	public string FileName;
+	public string FileCaption;
 	[System.Serializable]
 	public class Item
 	{
@@ -25,8 +28,6 @@ public class ItemData : ScriptableObject
 		public ItemType type;
 	}
 
-	public string fileName;
-	public string fileCaption;
 	public Item[] items;
 
 	public ItemData Clone()

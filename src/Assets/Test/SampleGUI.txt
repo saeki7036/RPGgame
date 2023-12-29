@@ -1,8 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+// ===================================
+//
+// Released under the CC0 license.
+// https://creativecommons.org/publicdomain/zero/1.0/deed.ja
+//
+// Created by copocopo in 2021.
+//
+// ===================================
 using UnityEngine;
 using UnityEditor;
-public class ItemEditorWindow : EditorWindow
+
+/// <summary>
+/// æœ¬æ›¸ã®å‰åŠã§ä½œæˆã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã®ãƒ„ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+/// </summary>
+public class ItemEditorWindow : EditorWindow, IHasCustomMenu
 {
 	[MenuItem("Window/Demo/ItemEditorWindow", priority = 0)]
 	static public void CreateWindow()
@@ -40,27 +50,27 @@ public class ItemEditorWindow : EditorWindow
 
 			using (new EditorGUILayout.HorizontalScope())
 			{
-				if (GUILayout.Button("ƒAƒCƒeƒ€‚ğ’Ç‰Á"))
+				if (GUILayout.Button("ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ "))
 				{
 					Undo.RecordObject(itemData, "Add Item");
 					int itemLength = this.itemData.items.Length;
 					System.Array.Resize(ref this.itemData.items, itemLength + 1);
 					this.itemData.items[itemLength] = new ItemData.Item()
 					{
-						name = "–¼‘O‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢",
-						caption = "à–¾•¶",
+						name = "åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„",
+						caption = "èª¬æ˜æ–‡",
 					};
 				}
 
 				GUILayout.FlexibleSpace();
 
-				if (GUILayout.Button("Œ³‚É–ß‚·"))
+				if (GUILayout.Button("å…ƒã«æˆ»ã™"))
 				{
 					this.itemData = AssetDatabase.LoadAssetAtPath<ItemData>(this.itemDataPath).Clone();
 					EditorGUIUtility.editingTextField = false;
 				}
 
-				if (GUILayout.Button("•Û‘¶"))
+				if (GUILayout.Button("ä¿å­˜"))
 				{
 					var data = AssetDatabase.LoadAssetAtPath<ItemData>(this.itemDataPath);
 					EditorUtility.CopySerialized(this.itemData, data);
@@ -83,7 +93,7 @@ public class ItemEditorWindow : EditorWindow
 					{
 						EditorGUILayout.LabelField(data.id.ToString(), GUILayout.MaxWidth(50f));
 						EditorGUILayout.LabelField(data.name, GUILayout.MaxWidth(200f));
-						if (GUILayout.Button("•ÒW", GUILayout.MaxWidth(50f)))
+						if (GUILayout.Button("ç·¨é›†", GUILayout.MaxWidth(50f)))
 						{
 							Undo.RecordObject(this, "Select Item");
 							this.selectedIndex = i;
@@ -99,8 +109,8 @@ public class ItemEditorWindow : EditorWindow
 					Undo.RecordObject(itemData, "Modify ItemData at " + this.selectedIndex);
 					var selectedItem = this.itemData.items[this.selectedIndex];
 					selectedItem.id = EditorGUILayout.IntField("ID", selectedItem.id);
-					selectedItem.name = EditorGUILayout.TextField("ƒAƒCƒeƒ€–¼", selectedItem.name);
-					selectedItem.type = (ItemType)EditorGUILayout.EnumPopup("ƒAƒCƒeƒ€ƒ^ƒCƒv", selectedItem.type);
+					selectedItem.name = EditorGUILayout.TextField("ã‚¢ã‚¤ãƒ†ãƒ å", selectedItem.name);
+					selectedItem.type = (ItemType)EditorGUILayout.EnumPopup("ã‚¢ã‚¤ãƒ†ãƒ ã‚¿ã‚¤ãƒ—", selectedItem.type);
 					selectedItem.caption = EditorGUILayout.TextArea(selectedItem.caption, GUILayout.Height(EditorGUIUtility.singleLineHeight * 4f));
 				}
 				GUILayout.FlexibleSpace();
@@ -131,12 +141,12 @@ public class ItemEditorWindow : EditorWindow
 			var rect = new Rect(Vector2.zero, this.position.size);
 			var bgColor = Color.white * new Color(1f, 1f, 1f, 0.2f);
 			EditorGUI.DrawRect(rect, bgColor);
-			EditorGUI.LabelField(rect, "‚±‚±‚ÉƒAƒCƒeƒ€ƒf[ƒ^‚ğƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚µ‚Ä‚­‚¾‚³‚¢", this.skin.GetStyle("D&D"));
+			EditorGUI.LabelField(rect, "ã“ã“ã«ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã—ã¦ãã ã•ã„", this.skin.GetStyle("D&D"));
 		}
 	}
 
 	public void AddItemsToMenu(GenericMenu menu)
 	{
-		menu.AddItem(new GUIContent("Original Menu"), false, () => Debug.Log("Press Menu!"));
+		menu.AddItem(new GUIContent("Original Menu"), false, () => Debug.Log("Press Menu!") );
 	}
 }
