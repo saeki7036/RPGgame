@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 public class ItemEditer : EditorWindow
 {
-    [MenuItem("Window/OriginalPanels/ItemEditer", priority = 2)]
+    [MenuItem("Window/OriginalPanels/ItemEditer", priority = 0)]
     static public void CreateWindow()
     {
         EditorWindow.GetWindow<ItemEditer>();
@@ -23,14 +23,11 @@ public class ItemEditer : EditorWindow
 
     private void OnEnable()
     {
-        this.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Test/GUISkin_Item.guiskin");
+        this.skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Datas/GUISkin_Data.guiskin");
         var defaultData = Resources.Load<ItemData>("ItemData");
         this.itemData = defaultData.Clone();
         this.itemDataPath = AssetDatabase.GetAssetPath(defaultData);
     }
-
-
-
 
     private void OnGUI()
     {

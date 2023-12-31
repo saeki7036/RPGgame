@@ -28,7 +28,7 @@ public class ItemBaseEditer : EditorWindow
     // Update is called once per frame
     private void OnEnable()
     {
-        this._skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Test/GUISkin_Item.guiskin");
+        this._skin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Datas/GUISkin_Data.guiskin");
         var defaultData = Resources.Load<ItemDataBase>("ItemDataBase");
         this.BaseData = defaultData.Clone();
         this .BaseDataPath = AssetDatabase.GetAssetPath(defaultData);
@@ -45,7 +45,7 @@ public class ItemBaseEditer : EditorWindow
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button("アイテムを追加", GUILayout.MaxWidth(120f), GUILayout.MaxHeight(40f)))
+                if (GUILayout.Button("アイテムを追加", GUILayout.MaxWidth(120f), GUILayout.MaxHeight(20f)))
                 {
                     Undo.RecordObject(BaseData, "Add Item");
                     int Item_ID_Length = this.BaseData.items[Slider_value].category.ID.Length;
@@ -60,22 +60,25 @@ public class ItemBaseEditer : EditorWindow
                     };
                 }
 
-                Slider_value = (int)EditorGUILayout.Slider(Slider_value, 0, this.BaseData.items.Length-1,
+                Slider_value = (int)EditorGUILayout.Slider(Slider_value, 0, this.BaseData.items.Length -1,
                     GUILayout.MaxWidth(160f), GUILayout.MaxHeight(20f));
+
                 EditorGUILayout.LabelField("|:",
                     GUILayout.MaxWidth(20f), GUILayout.MaxHeight(20f));
+
                 EditorGUILayout.LabelField(this.BaseData.items[Slider_value].type.ToString(),
                     GUILayout.MaxWidth(80f), GUILayout.MaxHeight(20f));
 
+
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("元に戻す", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(40f)))
+                if (GUILayout.Button("元に戻す", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(20f)))
                 {
                     this.BaseData = AssetDatabase.LoadAssetAtPath<ItemDataBase>(this.BaseDataPath).Clone();
                     EditorGUIUtility.editingTextField = false;
                 }
 
-                if (GUILayout.Button("保存", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(40f)))
+                if (GUILayout.Button("保存", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(20f)))
                 {
                     var data = AssetDatabase.LoadAssetAtPath<ItemDataBase>(this.BaseDataPath);
                     EditorUtility.CopySerialized(this.BaseData, data);
@@ -85,7 +88,7 @@ public class ItemBaseEditer : EditorWindow
             }
         }
 
-        using (new EditorGUILayout.HorizontalScope())
+        using (new EditorGUILayout.HorizontalScope( GUILayout.MaxHeight(800f)))
         {
             using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.MinWidth(315f)))
             {

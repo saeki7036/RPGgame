@@ -9,7 +9,7 @@ public enum Item_Type
     [InspectorName("É|Å[ÉVÉáÉì")] Potion,
 }
 
-[CreateAssetMenu(fileName = "ItemDataBase", menuName = "ScriptableObjects/ItemDataBase")]
+[CreateAssetMenu(fileName = "ItemDataBase", menuName = "OriginalScriptableObjects/ItemDataBase")]
 
 [System.Serializable]
 public class ItemDataBase : ScriptableObject

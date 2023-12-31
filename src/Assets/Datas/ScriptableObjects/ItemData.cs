@@ -12,7 +12,7 @@ public enum ItemType
 	[InspectorName("èdóv")] Important,
 }
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/ItemData")]
+[CreateAssetMenu(fileName = "ItemData", menuName = "OriginalScriptableObjects/ItemData")]
 [System.Serializable]
 public class ItemData : ScriptableObject
 {
