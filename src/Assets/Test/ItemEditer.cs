@@ -56,7 +56,7 @@ public class ItemEditer : EditorWindow
                 }
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("Œ³‚É–ß‚·", GUILayout.MaxWidth(120f), GUILayout.MaxHeight(40f)))
+                if (GUILayout.Button("–ß‚·", GUILayout.MaxWidth(120f), GUILayout.MaxHeight(40f)))
                 {
                     this.itemData = AssetDatabase.LoadAssetAtPath<ItemData>(this.itemDataPath).Clone();
                     EditorGUIUtility.editingTextField = false;

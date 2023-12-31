@@ -36,10 +36,10 @@ public class ItemBaseEditer : EditorWindow
 
     private void OnGUI()
     {
-        using (new EditorGUILayout.VerticalScope(_skin.GetStyle("Header")))
+        using (new EditorGUILayout.VerticalScope(_skin.GetStyle("Header"), GUILayout.MaxHeight(90f)))
         {
             Undo.RecordObject(BaseData, "Modify FileName or Caption of ItemDataBase");
-            BaseData.FileName = EditorGUILayout.TagField(BaseData.FileName);
+            BaseData.FileName = EditorGUILayout.TextArea(BaseData.FileName);
             BaseData.FileCaption = EditorGUILayout.TextArea(BaseData.FileCaption,
                 GUILayout.Height(EditorGUIUtility.singleLineHeight));
 
@@ -62,7 +62,11 @@ public class ItemBaseEditer : EditorWindow
 
                 Slider_value = (int)EditorGUILayout.Slider(Slider_value, 0, this.BaseData.items.Length-1,
                     GUILayout.MaxWidth(160f), GUILayout.MaxHeight(20f));
-                
+                EditorGUILayout.LabelField("|:",
+                    GUILayout.MaxWidth(20f), GUILayout.MaxHeight(20f));
+                EditorGUILayout.LabelField(this.BaseData.items[Slider_value].type.ToString(),
+                    GUILayout.MaxWidth(80f), GUILayout.MaxHeight(20f));
+
                 GUILayout.FlexibleSpace();
 
                 if (GUILayout.Button("元に戻す", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(40f)))
@@ -81,11 +85,70 @@ public class ItemBaseEditer : EditorWindow
             }
         }
 
+        using (new EditorGUILayout.HorizontalScope())
+        {
+            using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.MinWidth(315f)))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("ID", GUILayout.MaxWidth(30f));
+                    EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
+                    EditorGUILayout.LabelField("Item Name", GUILayout.MaxWidth(170f));
+                    EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
+                    EditorGUILayout.LabelField("編集ボタン", GUILayout.MaxWidth(60f));
+                }
+                    scrollPosition = scroll.scrollPosition;
+
+                for (int i = 0; i < this.BaseData.items[Slider_value].category.ID.Length; i++)
+                {
+                    var data = this.BaseData.items[Slider_value].category.ID[i];
+                    using (new EditorGUILayout.HorizontalScope(_skin.GetStyle("Scroll")))
+                    {
+                        EditorGUILayout.LabelField(i.ToString(), GUILayout.MaxWidth(30f));
+                        EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
+                        EditorGUILayout.LabelField(data.Name, GUILayout.MaxWidth(170f));
+                        EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
+                        if (GUILayout.Button("編集", GUILayout.MaxWidth(60f)))
+                        {
+                            Undo.RecordObject(this, "Select Item");
+                            this.Selected_Index = i;
+                        }
+                    }
+                }
+
+            }
+
+            using (new EditorGUILayout.VerticalScope())
+            {
+                EditorGUILayout.LabelField("Caption", GUILayout.MaxHeight(20f));
+
+                if (0 <= this.Selected_Index && this.Selected_Index < this.BaseData.items[Slider_value].category.ID.Length)
+                {
+                    using (new EditorGUILayout.VerticalScope(_skin.GetStyle("Inspector")))
+                    {
+                        //Undo.RecordObject(itemData, "Modify ItemData at " + this.selectedIndex);
+                        var selectedItem = this.BaseData.items[Slider_value].category.ID[this.Selected_Index];
+
+                        EditorGUILayout.LabelField("ID", this.Selected_Index.ToString());
+                        selectedItem.Name = EditorGUILayout.TextField("アイテム名", selectedItem.Name);
+                        selectedItem.Efect1 = EditorGUILayout.IntField("Efect1", selectedItem.Efect1);
+                        selectedItem.Efect2 = EditorGUILayout.IntField("Efect2", selectedItem.Efect2);
+                        selectedItem.Efect3 = EditorGUILayout.IntField("Efect3", selectedItem.Efect3);
+
+                        EditorGUILayout.LabelField("Caption", GUILayout.MaxHeight(25f));
+
+                        selectedItem.caption = EditorGUILayout.TextArea(selectedItem.caption, GUILayout.Height(EditorGUIUtility.singleLineHeight * 4f));
+                    }
+                }
+                //GUILayout.FlexibleSpace();
+            }
+        }
+
         if (Event.current.type == EventType.DragUpdated)
         {
             if (DragAndDrop.objectReferences != null &&
                 DragAndDrop.objectReferences.Length > 0 &&
-                DragAndDrop.objectReferences[0] is ItemData)
+                DragAndDrop.objectReferences[0] is ItemDataBase)
             {
                 DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
                 Event.current.Use();
@@ -99,7 +162,6 @@ public class ItemBaseEditer : EditorWindow
             DragAndDrop.AcceptDrag();
             Event.current.Use();
         }
-
         if (DragAndDrop.visualMode == DragAndDropVisualMode.Copy)
         {
             var rect = new Rect(Vector2.zero, this.position.size);
