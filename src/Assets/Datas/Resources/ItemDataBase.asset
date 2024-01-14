@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 669e025cbf9668949a054f8a9c1615ab, type: 3}
-  m_Name: ItemDataBase(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_Name: ItemDataBase(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
   m_EditorClassIdentifier: 
   FileName: Title
   FileCaption: 
@@ -34,7 +34,7 @@ MonoBehaviour:
         Efect2: 0
         Efect3: 0
         caption: "\u8AAC\u660E\u6587"
-      - Name: "\u540D\u524D\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044"
+      - Name: k
         Efect1: 0
         Efect2: 0
         Efect3: 0
