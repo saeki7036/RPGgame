@@ -22,8 +22,15 @@ public class MapDataBase : ScriptableObject
     [System.Serializable]
     public class Preset
     {
-        public Map_Object[,] presetData;
+        //public Map_Object[][] presetData;
         public Floor[] Point;
+        public HEIGHT[] Height;
+
+        [System.Serializable]
+        public class HEIGHT
+        {
+            public Map_Object[] Width;
+        }
 
         [System.Serializable]
         public class Floor

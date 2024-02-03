@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using static MapDataBase.Preset;
 public class MapEditer : EditorWindow
 {
     [MenuItem("Window/OriginalPanels/EditorWindow", priority = 2)]
@@ -24,24 +25,14 @@ public class MapEditer : EditorWindow
         this.BaseData = defaultData.Clone();
         this.BaseDataPath = AssetDatabase.GetAssetPath(defaultData);
     }
-
    
     const int BOARD_WIDTH = 30;
     const int BOARD_HEIGHT = 20;
     private Vector2 scrollPosition;
-    private int Slider_value = 0;
-   
+    private int Slider_Value_Map = 0;
+    //private int Slider_Value_Floor = 0;
     // Update is called once per frame
 
-
-
-
-    private void SetData(int N)
-    {
-        for (int X = 0; X < BOARD_WIDTH; X++)
-            for (int Y = 0; Y < BOARD_HEIGHT; Y++)
-                BaseData.preset[N].presetData[Y, X] = Map_Object.EndWall;
-    }
     private void OnGUI()
     {
         using (new EditorGUILayout.VerticalScope())
@@ -50,7 +41,7 @@ public class MapEditer : EditorWindow
             using (new EditorGUILayout.HorizontalScope())
             {
              
-                Slider_value = (int)EditorGUILayout.Slider("Map_ID", Slider_value, 0, this.BaseData.preset.Length - 1, GUILayout.MaxWidth(300f));
+                Slider_Value_Map = (int)EditorGUILayout.Slider("Map_ID", Slider_Value_Map, 0, this.BaseData.preset.Length - 1, GUILayout.MaxWidth(300f));
                 EditorGUILayout.LabelField("||Map:", GUILayout.MaxWidth(40f));
                
                 GUILayout.FlexibleSpace();
@@ -62,22 +53,175 @@ public class MapEditer : EditorWindow
                     System.Array.Resize(ref this.BaseData.preset, Map_Length + 1);
                     this.BaseData.preset[Map_Length] = new MapDataBase.Preset()
                     {
-                        presetData = new Map_Object[BOARD_HEIGHT, BOARD_WIDTH],
                         Point = new MapDataBase.Preset.Floor[1],
-                    };
+                        Height =  new HEIGHT[BOARD_HEIGHT],
+                        /*Map_Object[][] presetData = new Map_Object[BOARD_HEIGHT][]
+                        {
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                            new Map_Object[BOARD_WIDTH]
+                            {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                        };
+                        /*
 
-                    SetData(Map_Length);
+                        {  
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall},
+                           {Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,
+                            Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall,Map_Object.EndWall}, };
+                        */
+                    };
+                    for(int _Y = 0; BOARD_HEIGHT >_Y; _Y++)
+                    {
+                        this.BaseData.preset[Map_Length].Height[_Y] = new MapDataBase.Preset.HEIGHT()
+                        {
+                            Width = new Map_Object[BOARD_WIDTH],
+                        };
+                        //System.Array.Resize(ref this.BaseData.preset[Map_Length].Height[_Y].Width, BOARD_WIDTH);
+                        for (int _X = 0; BOARD_WIDTH > _X; _X++)
+                            this.BaseData.preset[Map_Length].Height[_Y].Width[_X] = Map_Object.EndWall;
+                    }
+                    //SetData(Map_Length);
                 }
                 
                 if (GUILayout.Button("ポイントを追加", GUILayout.MaxWidth(120f), GUILayout.MaxHeight(20f)))
                 {
                     Undo.RecordObject(BaseData, "Add Point");
-                    int Point_Length = this.BaseData.preset[Slider_value].Point.Length;
-                    System.Array.Resize(ref this.BaseData.preset[Slider_value].Point, Point_Length + 1);
-                    this.BaseData.preset[Slider_value].Point[Point_Length]  = new MapDataBase.Preset.Floor();
+                    int Point_Length = this.BaseData.preset[Slider_Value_Map].Point.Length;
+                    System.Array.Resize(ref this.BaseData.preset[Slider_Value_Map].Point, Point_Length + 1);
+                    this.BaseData.preset[Slider_Value_Map].Point[Point_Length]  = new MapDataBase.Preset.Floor()
                     {
-                        Vector2Int LowerLeftPos = new(0, 0);
-                        Vector2Int UpperRightPos = new(0, 0);
+                        LowerLeftPos = new(0, 0),
+                        UpperRightPos = new(0, 0),
                     };
                 }
                 if (GUILayout.Button("元に戻す", GUILayout.MaxWidth(60f), GUILayout.MaxHeight(20f)))
@@ -98,7 +242,7 @@ public class MapEditer : EditorWindow
 
         using (new EditorGUILayout.HorizontalScope(GUILayout.MaxWidth(20f)))
         {
-            if(0< this.BaseData.preset.Length)
+            if(0 < this.BaseData.preset.Length)
                 for (int X = 0; X < BOARD_WIDTH; X++)
                 {
                     using (new EditorGUILayout.VerticalScope())
@@ -111,7 +255,7 @@ public class MapEditer : EditorWindow
                                 if (X == 0)
                                     EditorGUILayout.LabelField(Y.ToString(), GUILayout.MaxWidth(20f));
                                 
-                                Map_Object map_Object = BaseData.preset[Slider_value].presetData[Y, X];
+                                Map_Object map_Object = BaseData.preset[Slider_Value_Map].Height[Y].Width[X];
                                 switch (map_Object)
                                 {
                                     case Map_Object.EndWall:
@@ -137,8 +281,8 @@ public class MapEditer : EditorWindow
                                         break;
                                 }
 
-                                BaseData.preset[Slider_value].presetData[Y, X] =
-                                (Map_Object)EditorGUILayout.EnumPopup(BaseData.preset[Slider_value].presetData[Y, X],
+                                BaseData.preset[Slider_Value_Map].Height[Y].Width[X] =
+                                (Map_Object)EditorGUILayout.EnumPopup(BaseData.preset[Slider_Value_Map].Height[Y].Width[X],
                                 GUILayout.MaxWidth(20f), GUILayout.MaxHeight(20f));
 
                                 GUI.backgroundColor = Color.white;
@@ -147,49 +291,63 @@ public class MapEditer : EditorWindow
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             if (X == 0)
-                                EditorGUILayout.LabelField("", GUILayout.MaxWidth(20f));
+                                EditorGUILayout.LabelField("Y/X", GUILayout.MaxWidth(20f));
                             EditorGUILayout.LabelField(X.ToString(), GUILayout.MaxWidth(20f));
                         }
                     }
                 }
+
             using (new EditorGUILayout.HorizontalScope(GUILayout.MaxWidth(300f)))
             {
-                if (0 < this.BaseData.preset.Length&&0 < this.BaseData.preset[Slider_value].Point.Length)
+                if (0 < this.BaseData.preset.Length && 0 < this.BaseData.preset[Slider_Value_Map].Point.Length)
                 using (new EditorGUILayout.VerticalScope(GUILayout.MaxWidth(300f)))
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("No.", GUILayout.MaxWidth(20f));
+                        EditorGUILayout.LabelField("No.", GUILayout.MaxWidth(30f));
                         EditorGUILayout.LabelField("|", GUILayout.MaxWidth(12f)); 
                         EditorGUILayout.LabelField("Pos", GUILayout.MaxWidth(25f));
                         EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
-                        EditorGUILayout.LabelField("X", GUILayout.MaxWidth(40f));
+                        EditorGUILayout.LabelField("X", GUILayout.MaxWidth(38f));
                         EditorGUILayout.LabelField("Y", GUILayout.MaxWidth(30f));
                     }
                     using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.MinWidth(180f)))
                     {
                         scrollPosition = scroll.scrollPosition;
                        
-                        for (int i = 0; i < this.BaseData.preset[Slider_value].Point.Length; i++)
+                        for (int i = 0; i < this.BaseData.preset[Slider_Value_Map].Point.Length; i++)
                         {
                             using (new EditorGUILayout.HorizontalScope())
                             {
-                                EditorGUILayout.LabelField(i.ToString(), GUILayout.MaxWidth(20f));
-                                EditorGUILayout.LabelField("|", GUILayout.MaxWidth(10f));
                                 using (new EditorGUILayout.VerticalScope())
                                 {
-                                    EditorGUILayout.LabelField("左下", GUILayout.MaxWidth(40f));
-                                    EditorGUILayout.LabelField("右上", GUILayout.MaxWidth(40f));
+                                        EditorGUILayout.LabelField(i.ToString(), GUILayout.MaxWidth(20f));
+                                        // EditorGUILayout.LabelField("|", GUILayout.MaxWidth(15f));
+
+                                        if (GUILayout.Button("設置"))
+                                        {
+                                            Undo.RecordObject(BaseData, "SET Floor");
+                                            int FloorPoint = i;
+                                            for(int _X = this.BaseData.preset[Slider_Value_Map].Point[FloorPoint].LowerLeftPos.x; _X < BOARD_WIDTH && _X <= this.BaseData.preset[Slider_Value_Map].Point[FloorPoint].UpperRightPos.x; _X++)
+                                                for(int _Y = this.BaseData.preset[Slider_Value_Map].Point[FloorPoint].LowerLeftPos.y; _Y < BOARD_HEIGHT && _Y <= this.BaseData.preset[Slider_Value_Map].Point[FloorPoint].UpperRightPos.y; ++_Y)
+                                                    BaseData.preset[Slider_Value_Map].Height[_Y].Width[_X] = Map_Object.Floor;
+                                        }
+                                    }
+
+                                using (new EditorGUILayout.VerticalScope())
+                                {
+                                    EditorGUILayout.LabelField("左下", GUILayout.MaxWidth(30f));
+                                    EditorGUILayout.LabelField("右上", GUILayout.MaxWidth(30f));
                                 }
                                
                                 using (new EditorGUILayout.VerticalScope())
                                 {
-                                    BaseData.preset[Slider_value].Point[i].LowerLeftPos = 
-                                            EditorGUILayout.Vector2IntField("", BaseData.preset[Slider_value].Point[i].LowerLeftPos, 
+                                    BaseData.preset[Slider_Value_Map].Point[i].LowerLeftPos = 
+                                            EditorGUILayout.Vector2IntField("", BaseData.preset[Slider_Value_Map].Point[i].LowerLeftPos, 
                                             GUILayout.MaxWidth(80f));
 
-                                    BaseData.preset[Slider_value].Point[i].UpperRightPos = 
-                                            EditorGUILayout.Vector2IntField("", BaseData.preset[Slider_value].Point[i].UpperRightPos,
+                                    BaseData.preset[Slider_Value_Map].Point[i].UpperRightPos = 
+                                            EditorGUILayout.Vector2IntField("", BaseData.preset[Slider_Value_Map].Point[i].UpperRightPos,
                                             GUILayout.MaxWidth(80f));
                                 }                 
                             }
