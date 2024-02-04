@@ -43,4 +43,20 @@ public class MapDataBase : ScriptableObject
     {
         return Instantiate(this);
     }
+
+    public Map_Object GetMapData(int Pre_Num, int Y_Pos, int X_Pos) 
+    {
+        //Debug.Log(preset[Pre_Num].Height[Y_Pos].Width[X_Pos]);
+        return preset[Pre_Num].Height[Y_Pos].Width[X_Pos];
+    }
+
+    public Vector2Int GetLowerLeftPos(int Pre_Num, int Point_Num) 
+    { 
+        return preset[Pre_Num].Point[Point_Num].LowerLeftPos; 
+    }
+
+    public Vector2Int GetUpperRightPos(int Pre_Num, int Point_Num)
+    {
+        return preset[Pre_Num].Point[Point_Num].UpperRightPos;
+    }
 }

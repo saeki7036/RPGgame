@@ -1407,7 +1407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1513460515}
-  - component: {fileID: 1513460514}
+  - component: {fileID: 1513460516}
   m_Layer: 0
   m_Name: Deta
   m_TagString: Untagged
@@ -1415,18 +1415,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1513460514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513460513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66ac87169a0727e4385d56bd26712d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1513460515
 Transform:
   m_ObjectHideFlags: 0
@@ -1442,6 +1430,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1513460516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513460513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5bf567517152334f97fbcd316c5f784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Map_Data: {fileID: 11400000, guid: 8d37b5c998ccb7842bc8267c80681140, type: 2}
 --- !u!1 &1653179004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,6 +1864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Deta: {fileID: 1513460513}
   Player: {fileID: 1471831075}
+  Map_Data: {fileID: 11400000, guid: 8d37b5c998ccb7842bc8267c80681140, type: 2}
   endWall: {fileID: 2591640816904635383, guid: 742f61072c3a46b47824ec7d1c180e39, type: 3}
   wall: {fileID: 595602511139732777, guid: b13b77a9dfdba9f4f8350ca959955490, type: 3}
   water: {fileID: 8751724791198600014, guid: ea5179079c9114b46a9447f4f08fb974, type: 3}
