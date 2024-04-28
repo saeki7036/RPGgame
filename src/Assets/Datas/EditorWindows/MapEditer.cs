@@ -37,8 +37,11 @@ public class MapEditer : EditorWindow
     {
         using (new EditorGUILayout.VerticalScope())
         {
-            Undo.RecordObject(BaseData, "Modify MapDataBase");
+            //Debug.Log(BaseData);
+            if(BaseData == null) this.BaseData = AssetDatabase.LoadAssetAtPath<MapDataBase>(this.BaseDataPath).Clone();
 
+            Undo.RecordObject(BaseData, "Modify MapDataBase");
+     
             using (new EditorGUILayout.HorizontalScope())
             {
              

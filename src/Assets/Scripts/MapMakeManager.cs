@@ -314,7 +314,8 @@ public class MapMakeManager : MonoBehaviour
 
         if (dier_x != pos.x && dier_y != pos.y)
         {
-            if ((int)_board_Map[dier_y, pos.x] == 3 || (int)_board_Map[dier_y, pos.x] == 0 || (int)_board_Map[pos.y, dier_x] == 3 || (int)_board_Map[pos.y, dier_x] == 0)
+            if ((int)_board_Map[dier_y, pos.x] == 3 || (int)_board_Map[dier_y, pos.x] == 0 || 
+                (int)_board_Map[pos.y, dier_x] == 3 || (int)_board_Map[pos.y, dier_x] == 0)
                 return false;
         }
 
@@ -323,7 +324,7 @@ public class MapMakeManager : MonoBehaviour
             _board_Chara[pos.y, pos.x] = CharaObject.None;
             _board_Chara[dier_y, dier_x] = CharaObject.Player;
             P_Scr.SetPos_P(new Vector2Int(dier_x, dier_y));
-            Debug.Log(new Vector2Int(dier_x, dier_y));
+            //Debug.Log(new Vector2Int(dier_x, dier_y));
         }
 
         return true;

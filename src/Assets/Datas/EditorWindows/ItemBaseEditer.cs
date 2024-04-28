@@ -36,6 +36,7 @@ public class ItemBaseEditer : EditorWindow
 
     private void OnGUI()
     {
+        if(BaseData == null) this.BaseData = AssetDatabase.LoadAssetAtPath<ItemDataBase>(this.BaseDataPath).Clone();
         using (new EditorGUILayout.VerticalScope(_skin.GetStyle("Header"), GUILayout.MaxHeight(90f)))
         {
             Undo.RecordObject(BaseData, "Modify FileName or Caption of ItemDataBase");

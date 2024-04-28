@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,17 +8,32 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float Speed = 0.04f;
 
     public Vector2Int Player_pos;
-    private Vector2 _Direction;
-    private Vector2Int Move_Direction;
-    bool InputLag;
 
-    [SerializeField] GameObject MMM_Obj;
+
+
+    private Vector2 _Direction;
+    [NonSerialized]
+    public bool OpenMenu;
+
+
+
+
+
+
+
+    private Vector2Int Move_Direction;
+    public bool InputLag;
+
+    [SerializeField] GameObject MMM_Obj,Menu_Obj;
+
     MapMakeManager MMM;
+    public PlayerInput playerInput;
 
     enum PlayerAction
     {
         None = 0,
         Move = 1,
+        Menu = 2,
     }
     PlayerAction _playerAction;
     // Start is called before the first frame update
@@ -26,6 +42,7 @@ public class PlayerScript : MonoBehaviour
         _playerAction = PlayerAction.None;
         InputLag = true;
         MMM = MMM_Obj.GetComponent<MapMakeManager>();
+        playerInput = GetComponent<PlayerInput>();
         //Player_pos.x = (int)transform.position.x / 2;
         //Player_pos.y = (int)transform.position.z / 2;
         Move_Direction = new Vector2Int(0,0);
@@ -43,8 +60,20 @@ public class PlayerScript : MonoBehaviour
 
         // ˆÚ“®‘¬“x‚ð•ÛŽ
         _Direction = new Vector2(axis.x, axis.y);
+        //Debug.Log(_Direction);
        
     }
+    public void OnOpenMenu(InputAction.CallbackContext context)
+    {
+        var isTrigger = context.ReadValueAsButton();
+        //if (!context.performed) return;
+        OpenMenu = isTrigger;
+    }
+
+
+
+
+
 
     private void MoveAction()
     {
@@ -67,7 +96,7 @@ public class PlayerScript : MonoBehaviour
         if ((transform.position - Target_pos).magnitude > 0.01f) 
         {
             transform.position += new Vector3(Move_Direction.x, 0.0f, Move_Direction.y) * Speed;
-            Debug.Log((transform.position - Target_pos).magnitude);
+            //Debug.Log((transform.position - Target_pos).magnitude);
         }
 
         else
@@ -81,8 +110,15 @@ public class PlayerScript : MonoBehaviour
 
     private void ActionChange()
     {
-        if (_Direction != Vector2.zero && InputLag)
+        if(OpenMenu && InputLag &&!Menu_Obj.activeSelf)
         {
+            InputLag = false;
+            _playerAction = PlayerAction.Menu;
+        }
+
+        else if (_Direction != Vector2.zero && InputLag)
+        {
+
             if (MMM.NextCheck_P(Player_pos, _Direction))
             {
                 InputLag = false;
@@ -90,13 +126,19 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
-    // Update is called once per frame
+   
     void Update()
     {
-        Debug.Log(_Direction);
+        //Debug.Log(_Direction);
+
         ActionChange();
-    
-        if(_playerAction == PlayerAction.Move)
+        if (_playerAction == PlayerAction.Menu)
+        {
+            playerInput.currentActionMap = playerInput.actions.actionMaps[1];
+            Menu_Obj.SetActive(true);
+            _playerAction = PlayerAction.None;
+        }
+        if (_playerAction == PlayerAction.Move)
         {
             MoveAction();
         }
