@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10bf7347ebdbf1144b38203404ebf264, type: 3}
+  m_Name: EnemyDataBase(Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  FileName: 
+  FileCaption: 
+  ID:
+  - Object: {fileID: 1440784081768946884, guid: ef78ce03adf52ca418087695898cb12f, type: 3}
+    Name: Damy
+    max_hp: 999
+    atk: 1
+    def: 1
+    luk: 1
+    agi: 1
+    exp: 1
+    caption: "\u8AAC\u660E\u6587"
