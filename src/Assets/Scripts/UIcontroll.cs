@@ -8,7 +8,7 @@ public class UIcontroll : MonoBehaviour
     private Vector2 _Direction;
     private bool CloseMenu;
 
-    [SerializeField] GameObject Carsol_Obj, Menu_Obj;
+    [SerializeField] GameObject Carsol_Obj, Menu_Obj,Stetas_Obj;
 
     PlayerScript playerScript;
     private bool[][] MenuSelect = new bool[3][];
@@ -59,6 +59,7 @@ public class UIcontroll : MonoBehaviour
             {
                 Menu_Obj.SetActive(false);
                 Carsol_Obj.SetActive(false);
+                Stetas_Obj.SetActive(false);
                 playerScript.InputLag = true;
                 playerScript.playerInput.currentActionMap = playerScript.playerInput.actions.actionMaps[0];
             }
@@ -67,7 +68,10 @@ public class UIcontroll : MonoBehaviour
             {
 
             }
+            if (_Direction.y > 0)
+            {
 
+            }
         }
 
 
